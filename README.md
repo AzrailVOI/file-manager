@@ -61,6 +61,12 @@ Install dependencies
 ```sh
 pnpm install
 ```
+Create a folder `uploads`
+```sh
+mkdir uploads
+```
+Create a folder `certs` with `cert.pem` and `key.pem` files, if you want to use SSL
+
 Launch
 - In development mode
 ```sh
