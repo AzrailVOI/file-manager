@@ -1,0 +1,6 @@
+{
+  "watch": ["src", "views", "static"],
+  "ext": ".ts,.js,.html,.css,.pug",
+  "ignore": [],
+  "exec": "npm run build && node ./build/server.js"
+}

@@ -1,0 +1,61 @@
+doctype html
+head
+  title=TextDictionary[lang].title + ' | azrail.xyz'
+  link(rel='stylesheet', href='/static/style.css')
+  link(rel="icon", type="image/svg+xml", href="/static/favicon.svg")
+  script(src="https://unpkg.com/lucide@latest")
+  script(src="https://unpkg.com/axios/dist/axios.min.js")
+
+.dragBg.none
+  div
+    i(data-lucide="upload")
+    div Upload
+.title=TextDictionary[lang].title
+.langs
+  each langCode in langCodes
+    div.lang_option(data-lang=langCode, data-choosed=(lang === langCode))=TextDictionary[langCode].lang
+#container.col
+  #contextmenu.opacity-0
+    div.contextmenuoption(data-opt='open')=TextDictionary[lang].contextmenu.open
+    div.contextmenuoption(data-opt='rename')=TextDictionary[lang].contextmenu.rename
+    div.contextmenuoption(data-opt='delete')=TextDictionary[lang].contextmenu.delete
+  .add
+    h1=TextDictionary[lang].upload.title
+    form(enctype='multipart/form-data', id='uploadForm' action=('/upload/' + currentPath) method='post' accept-charset="UTF-8")
+      .file
+        label(for="upload-file")=TextDictionary[lang].upload.choose
+        input(type='file', name='input_file' id="upload-file" required=true)
+        button(type='submit', onclick='')=TextDictionary[lang].upload.upload
+        //button(type='button', onclick='uploadFile()') Upload
+      #file-list(data-none='true') none
+          br
+          | none
+  .files
+    h1=TextDictionary[lang].files.title
+    button.newFolder(id='new_folder')=TextDictionary[lang].files.newFolder
+    ul
+      if !isRoot
+        li
+          span.fileLink
+            a(href='../')='../'
+      if files.length === 0
+        h4=TextDictionary[lang].files.noFiles
+      each file in files
+        - var isFolder = file.includes(':directory')
+        if isFolder
+          li
+            span.fileLink
+              a(href=(isRoot ? 'uploads/' : '') + file.replace(/\//g, '').replace(':directory', ''))= file.replace(':directory', '')
+                i(data-lucide="folder")
+      each file in files
+        - var isFolder = file.includes(':directory')
+        if !isFolder
+          li
+            span.fileLink
+              a(href=(isRoot ? 'uploads/' : '') + file.replace(/\//g, ''))= file.replace(/\//g, '')
+                i(data-lucide="file")
+
+
+
+script(type='text/javascript', src='/static/script.js').
+script(type='text/javascript', src='/static/upload.js').

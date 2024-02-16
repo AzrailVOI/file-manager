@@ -1,0 +1,50 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  },
+  "scripts": {
+    "dev": "npx nodemon",
+    "build": "rimraf ./build && npx tsc",
+    "start": "npm run build && node build/server",
+    "lint": "npx eslint ./src",
+    "format": "npx eslint ./src --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "latest",
+    "@types/morgan": "^1.9.9",
+    "@types/multer": "^1.4.11",
+    "@types/node": "^20.10.7",
+    "@types/spdy": "^3.4.9",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "dotenv": "^16.3.1",
+    "eslint": "latest",
+    "husky": "latest",
+    "nodemon": "latest",
+    "prettier": "latest",
+    "rimraf": "latest",
+    "typescript": "latest"
+  },
+  "dependencies": {
+    "express": "latest",
+    "express-async-handler": "^1.2.0",
+    "morgan": "^1.10.0",
+    "multer": "1.4.5-lts.1",
+    "pug": "^3.0.2",
+    "spdy": "^4.0.2"
+  },
+  "optionalDependencies": {
+    "bufferutil": "latest",
+    "utf-8-validate": "latest"
+  }
+}
