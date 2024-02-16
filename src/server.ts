@@ -33,10 +33,7 @@ async function main() {
   const uploads = path.join(__dirname, '/uploads/')
   const certs = path.join(__dirname, '/certs/')
 
-  const options = {
-    key: fs.readFileSync(path.join(certs, 'key.pem')),
-    cert: fs.readFileSync(path.join(certs, 'cert.pem')),
-  }
+
 
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -154,6 +151,10 @@ async function main() {
 
 
   if (process.env.MODE === 'ssl'){
+    const options = {
+      key: fs.readFileSync(path.join(certs, 'key.pem')),
+      cert: fs.readFileSync(path.join(certs, 'cert.pem')),
+    }
     spdy.createServer(options, app).listen(SSL_PORT, () => {
       console.log('HTTP/2 server is running on port ' + SSL_PORT)
     })
@@ -162,6 +163,10 @@ async function main() {
       console.log(`Server listening on port ${PORT}`)
     })
   }else{
+    const options = {
+      key: fs.readFileSync(path.join(certs, 'key.pem')),
+      cert: fs.readFileSync(path.join(certs, 'cert.pem')),
+    }
     httpServer.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`)
     })
