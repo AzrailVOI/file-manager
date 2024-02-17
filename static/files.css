@@ -1,0 +1,59 @@
+.files{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
+ul{
+    text-align: left;
+    list-style: none;
+    font-size: 15pt;
+}
+.newFolder{
+    margin-top: 1rem;
+}
+
+
+.fileLink{
+    transition: .15s all ease-out;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    cursor: pointer;
+    color: white;
+    margin: .3rem 0;
+    padding: .5rem 1rem;
+    border-radius: 1rem;
+}
+.fileLink:hover{
+    background: #191921;
+}
+
+.newFolderRename{
+    background: #191921;
+}
+a{
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    flex-direction: row-reverse;
+    text-align: right;
+    justify-content: flex-end;
+    width: 100%;
+    color: white;
+}
+
+
+input[data-type="new_folder"], input[data-type="rename"]{
+    text-align: left;
+    list-style: none;
+    font-size: 15pt;
+    background: none;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 0;
+    margin: 0;
+    text-decoration: underline;
+}

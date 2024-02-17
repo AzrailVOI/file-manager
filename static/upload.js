@@ -1,37 +1,49 @@
 // Получаем корневой элемент документа
-const rootElement = document.documentElement;
-const dragBg = document.querySelector('.dragBg');
+// const rootElement = document.documentElement;
+// const dragBg = document.querySelector('.dragBg');
+const dragUpload = document.querySelector('.dragUpload');
 const fileListElement = document.getElementById('file-list')
 
 // Получаем элемент input, куда хотим добавить файлы
 const fileInput = document.getElementById('upload-file'); // Измените ID на нужный
 // Предотвращаем действие по умолчанию для событий dragover и dragenter
-rootElement.addEventListener('dragover', (event) => {
+dragUpload.addEventListener('dragover', (event) => {
   event.preventDefault();
 });
 
-rootElement.addEventListener('dragenter', (event) => {
+dragUpload.addEventListener('dragenter', (event) => {
   event.preventDefault();
-    dragBg.classList.remove('none');
+  // dragBg.classList.remove('none');
+  dragUpload.classList.add('bg-primary');
+  console.log('Drag enter event:', event);
+
 });
 
-rootElement.addEventListener('dragleave', (event) => {
+dragUpload.addEventListener('dragleave', (event) => {
   console.log('Drag leave event:', event);
-  if (!rootElement.contains(event.relatedTarget)) {
+  if (!dragUpload.contains(event.relatedTarget)) {
     console.log('Leaving the drag area');
       console.log('Adding "none" class');
-      dragBg.classList.add('none');
+      // dragBg.classList.add('none');
+    dragUpload.classList.remove('bg-primary');
   }
 });
-rootElement.addEventListener('drop', (event) => {
+dragUpload.addEventListener('drop', (event) => {
   event.preventDefault();
-  dragBg.classList.add('none');
-  rootElement.style.backgroundColor = 'transparent';
+  // dragBg.classList.add('none');
+  dragUpload.classList.remove('bg-primary');
 
   const files = event.dataTransfer.files;
   if (files.length > 0) {
     // Устанавливаем выбранные файлы в элемент input
-    fileInput.files = files;
+    let filteredFileDataTransfer = new DataTransfer()
+    for (let i = 0; i < files.length; i++) {
+      if (files[i].size <= 100 * 1024 * 1024) {
+        filteredFileDataTransfer.items.add(files[i]);
+      }
+    }
+
+    fileInput.files = filteredFileDataTransfer.files;
 
     // Обновляем список файлов на странице
     updateFileList(files);

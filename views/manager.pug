@@ -2,6 +2,8 @@ doctype html
 head
   title=TextDictionary[lang].title + ' | azrail.xyz'
   link(rel='stylesheet', href='/static/style.css')
+  link(rel='stylesheet', href='/static/upload.css')
+  link(rel='stylesheet', href='/static/files.css')
   link(rel="icon", type="image/svg+xml", href="/static/favicon.svg")
   script(src="https://unpkg.com/lucide@latest")
   script(src="https://unpkg.com/axios/dist/axios.min.js")
@@ -30,6 +32,9 @@ head
       #file-list(data-none='true') none
           br
           | none
+    .dragUpload
+      i(data-lucide="upload")
+      div Drop files here. 100 MB maximum file size
   .files
     h1=TextDictionary[lang].files.title
     button.newFolder(id='new_folder')=TextDictionary[lang].files.newFolder
@@ -43,19 +48,18 @@ head
       each file in files
         - var isFolder = file.includes(':directory')
         if isFolder
-          li
+          li.draggable(data-type='folder')
             span.fileLink
-              a(href=(isRoot ? 'uploads/' : '') + file.replace(/\//g, '').replace(':directory', ''))= file.replace(':directory', '')
+              a(data-type='folder', href=(isRoot ? 'uploads/' : '') + file.replace(/\//g, '').replace(':directory', ''))= file.replace(':directory', '')
                 i(data-lucide="folder")
       each file in files
         - var isFolder = file.includes(':directory')
         if !isFolder
-          li
+          li.draggable(data-type='file')
             span.fileLink
-              a(href=(isRoot ? 'uploads/' : '') + file.replace(/\//g, ''))= file.replace(/\//g, '')
+              a(data-type='file', href=(isRoot ? 'uploads/' : '') + file.replace(/\//g, ''), target="_blank")= file.replace(/\//g, '')
                 i(data-lucide="file")
 
-
-
 script(type='text/javascript', src='/static/script.js').
+script(type='text/javascript', src='/static/movingInside.js').
 script(type='text/javascript', src='/static/upload.js').
