@@ -76,6 +76,10 @@ pnpm dev
 ```sh
 pnpm start
 ```
+- PM2 launch
+```sh
+pm2 start pnpm --name "file-manager" -- start
+```
 Build to folder `build`
 ```sh
 pnpm build
