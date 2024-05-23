@@ -7,7 +7,7 @@ import path from 'path'
 import fs from 'fs'
 import multer from 'multer'
 import spdy from 'spdy'
-import TextDictionary from "./TextDictionary.js";
+import TextDictionary from './TextDictionary.js'
 
 dotenv.config()
 
@@ -32,8 +32,6 @@ async function main() {
 
   const uploads = path.join(__dirname, '/uploads/')
   const certs = path.join(__dirname, '/certs/')
-
-
 
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -65,7 +63,7 @@ async function main() {
         currentPath: '',
         TextDictionary: TextDictionary,
         lang: lang,
-        langCodes: Object.keys(TextDictionary)
+        langCodes: Object.keys(TextDictionary),
       })
     }),
   )
@@ -84,7 +82,7 @@ async function main() {
         currentPath: req.params[0],
         TextDictionary: TextDictionary,
         lang: lang,
-        langCodes: Object.keys(TextDictionary)
+        langCodes: Object.keys(TextDictionary),
       })
     }),
   )
@@ -100,7 +98,27 @@ async function main() {
 
   app.post('/move/*', upload.array('current_file'), (req, res) => {
     if (req.query.fileName) {
-      deleteFiles(req.query.fileName as string, res, uploads, currentDir)
+      const isDeletable = !process.env.NOT_DELETABLE_FOLDERS?.toString()
+        .split('$**$')
+        .some((folder) => req.body.fileName.endsWith(folder))
+      if (req.body.fileName && isDeletable) {
+        const filePath = path.join(uploads, currentDir, req.body.fileName)
+        if (fs.existsSync(filePath)) {
+          if (fs.lstatSync(filePath).isDirectory()) {
+            // Если это каталог, удаляем его рекурсивно
+            fs.rmdirSync(filePath, { recursive: true })
+            res.status(201).json({ message: 'Directory deleted.' })
+          } else {
+            // Если это файл, удаляем его
+            fs.unlinkSync(filePath)
+            res.status(201).json({ message: 'File deleted.' })
+          }
+        } else {
+          res.status(400).json({ message: 'File or folder not found.' })
+        }
+      } else {
+        res.status(400).json({ message: 'File or folder cannot be deleted' })
+      }
     }
     // res.status(201).json({ message: 'File moved.' })
 
@@ -129,8 +147,34 @@ async function main() {
 
   app.delete('/delete', (req, res) => {
     console.log(req.body)
-    console.log("NDF", ('/' + process.env.NOT_DELETABLE_FOLDERS?.toString().split('$**$')), '\n', req.body.fileName,!('/' + process.env.NOT_DELETABLE_FOLDERS?.toString().split('$**$')).includes(req.body.fileName.replace('/', '')))
-    deleteFiles(req.body.fileName, res, uploads, currentDir)
+    console.log(
+      'NDF',
+      '/' + process.env.NOT_DELETABLE_FOLDERS?.toString().split('$**$'),
+      '\n',
+      req.body.fileName,
+      !('/' + process.env.NOT_DELETABLE_FOLDERS?.toString().split('$**$')).includes(req.body.fileName.replace('/', '')),
+    )
+    const isDeletable = !process.env.NOT_DELETABLE_FOLDERS?.toString()
+      .split('$**$')
+      .some((folder) => req.body.fileName.endsWith(folder))
+    if (req.body.fileName && isDeletable) {
+      const filePath = path.join(uploads, currentDir, req.body.fileName)
+      if (fs.existsSync(filePath)) {
+        if (fs.lstatSync(filePath).isDirectory()) {
+          // Если это каталог, удаляем его рекурсивно
+          fs.rmdirSync(filePath, { recursive: true })
+          res.status(201).json({ message: 'Directory deleted.' })
+        } else {
+          // Если это файл, удаляем его
+          fs.unlinkSync(filePath)
+          res.status(201).json({ message: 'File deleted.' })
+        }
+      } else {
+        res.status(400).json({ message: 'File or folder not found.' })
+      }
+    } else {
+      res.status(400).json({ message: 'File or folder cannot be deleted' })
+    }
   })
 
   app.put('/lang', (req, res) => {
@@ -139,8 +183,7 @@ async function main() {
     res.status(201).json({ message: 'Language changed.' })
   })
 
-
-  if (process.env.MODE === 'ssl'){
+  if (process.env.MODE === 'ssl') {
     const options = {
       key: fs.readFileSync(path.join(certs, 'key.pem')),
       cert: fs.readFileSync(path.join(certs, 'cert.pem')),
@@ -148,11 +191,11 @@ async function main() {
     spdy.createServer(options, app).listen(SSL_PORT, () => {
       console.log('HTTP/2 server is running on port ' + SSL_PORT)
     })
-  }else if (process.env.MODE === 'httpOnly'){
+  } else if (process.env.MODE === 'httpOnly') {
     httpServer.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`)
     })
-  }else{
+  } else {
     const options = {
       key: fs.readFileSync(path.join(certs, 'key.pem')),
       cert: fs.readFileSync(path.join(certs, 'cert.pem')),
@@ -164,7 +207,6 @@ async function main() {
       console.log('HTTP/2 server is running on port ' + SSL_PORT)
     })
   }
-
 }
 
 main()
@@ -194,26 +236,4 @@ function getFilesInDirectory(directoryPath: string, isRoot: boolean, filesList: 
       return relativePath
     }
   })
-}
-
-function deleteFiles(fileName:string, res:Response, uploads:string, currentDir:string) {
-  const isDeletable = !process.env.NOT_DELETABLE_FOLDERS?.toString().split('$**$').some(folder => fileName.endsWith(folder));
-  if (fileName && isDeletable) {
-    const filePath = path.join(uploads, currentDir, fileName)
-    if (fs.existsSync(filePath)) {
-      if (fs.lstatSync(filePath).isDirectory()) {
-        // Если это каталог, удаляем его рекурсивно
-        fs.rmdirSync(filePath, { recursive: true })
-        res.status(201).json({ message: 'Directory deleted.' })
-      } else {
-        // Если это файл, удаляем его
-        fs.unlinkSync(filePath)
-        res.status(201).json({ message: 'File deleted.' })
-      }
-    } else {
-      res.status(400).json({ message: 'File or folder not found.' })
-    }
-  } else {
-    res.status(400).json({ message: 'File or folder cannot be deleted' })
-  }
 }
