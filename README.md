@@ -1,4 +1,4 @@
-# File manager
+# [File manager](https://github.com/AzrailVOI/file-manager)
 ExpressJS + Typescript + PUG
 
 ## Description
@@ -20,7 +20,7 @@ SSL support implemented
 You can add new translations in the file along the path `src/TextDictionary.ts`
 
 ### Structure
-- SSL certificate and key in the folder `certs` (`cert.pem` and `key.pem` files)
+- SSL certificate and key in the folder `certs` (`cert.pem` and `key.pem` files) (Only in NodeJS start)
 - The PUG file is located in the folder `views`
 - Styles, scripts and everything public in the folder `static`
 
@@ -31,34 +31,23 @@ You can add new translations in the file along the path `src/TextDictionary.ts`
 
 **PORT** - port number for the HTTP server
 
-**SSL_PORT** - port number for the HTTPS server
+**SSL_PORT** - port number for the HTTPS server (Only in NodeJS start)
 
 **NOT_DELETABLE_FOLDERS** - list of names of files and folders not available for deletion (separator: **$\*\*$**)
 
-**MODE** - **ssl**, **httpOnly** or **full** (for HTTPS only, HTTP only or both protocols mode, respectively)
+**MODE** - **ssl** (Only in NodeJS start), **httpOnly** or **full** (Only in NodeJS start) (for HTTPS only, HTTP only or both protocols mode, respectively)
 
 # Quick start with Docker
 
 ```shell
-docker run -d -e NODE_ENV=prod -e SYSTEM=lin -e PORT=3000 -e SSL_PORT=3443 -e NOT_DELETABLE_FOLDERS="folder1$**$folder2" -e MODE=full -p 3000:3000 -p 3443:3443 azrailvo/file-manager
+docker run -d -e NODE_ENV=prod -e SYSTEM=lin -e PORT=3000 -e -e NOT_DELETABLE_FOLDERS="folder1$**$folder2" -e MODE=httpOnly -p 3000:3000 azrailvo/file-manager
 ```
 
 **You can change environment variables**
 
-### Example .env file
-````
-NODE_ENV=prod
-SYSTEM=lin
-PORT=5000
-SSL_PORT=5020
-NOT_DELETABLE_FOLDERS=Important_folder$**$Do_not_delete
-MODE=full
-````
-
 # Quick start with NodeJS
 
 Create an .env file
-
 
 ### Example .env file
 ````
