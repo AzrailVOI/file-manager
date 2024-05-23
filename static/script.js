@@ -144,6 +144,7 @@ async function renameFile(input, span) {
     const res = await axios.put('/rename', {
       oldName: clicked_btn.innerText,
       newName: input.value,
+      currentDir: location.pathname,
     })
     if (res.status === 201) {
       span.classList.remove('newFolderRename')

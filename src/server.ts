@@ -141,7 +141,14 @@ async function main() {
 
   app.put('/rename', (req, res) => {
     console.log(req.body)
-    if (req.body.newName) {
+    const isEditable =
+      !process.env.NOT_DELETABLE_FOLDERS?.toString()
+        .split(separator)
+        .some((folder) => req.body.oldName.endsWith(folder)) &&
+      !(req.body.currentDir === '/' && req.body.oldName === 'README.txt')
+    console.log('isEditable', isEditable)
+    if (!isEditable) res.status(400).json({ message: 'Folder cannot be edited' })
+    if (req.body.newName && isEditable) {
       if (!fs.existsSync(uploads + currentDir + req.body.newName)) {
         fs.renameSync(uploads + currentDir + req.body.oldName, uploads + currentDir + req.body.newName)
         res.status(201).json({ message: 'Folder renamed.' })
@@ -153,12 +160,17 @@ async function main() {
     console.log(req.body)
     console.log(
       'NDF',
-      process.env.NOT_DELETABLE_FOLDERS, separator,
-      process.env.NOT_DELETABLE_FOLDERS?.toString().split(separator) )
+      process.env.NOT_DELETABLE_FOLDERS,
+      separator,
+      process.env.NOT_DELETABLE_FOLDERS?.toString().split(separator),
+    )
     console.log(
       req.body.fileName,
-      !('/' + process.env.NOT_DELETABLE_FOLDERS?.toString().split(separator)).includes(req.body.fileName.replace('/', '')),
-      !(req.body.currentDir === '/' && req.body.fileName === 'README.txt'))
+      !('/' + process.env.NOT_DELETABLE_FOLDERS?.toString().split(separator)).includes(
+        req.body.fileName.replace('/', ''),
+      ),
+      !(req.body.currentDir === '/' && req.body.fileName === 'README.txt'),
+    )
 
     const isDeletable =
       !process.env.NOT_DELETABLE_FOLDERS?.toString()
