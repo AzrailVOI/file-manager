@@ -121,7 +121,10 @@ document.querySelectorAll('.contextmenuoption').forEach((option) => {
 
       case 'delete':
         try {
-          const res = await axios.delete('/delete', { data: { fileName: clicked_btn.innerText } })
+          let currentDir = location.pathname
+          const res = await axios.delete('/delete', {
+            data: { fileName: clicked_btn.innerText, currentDir },
+          })
           if (res.status === 201) {
             location.reload()
           }
@@ -198,8 +201,8 @@ async function getLang() {
 async function langReq() {
   try {
     const res = await axios.put('/lang', {
-      lang: await getLang()
-    });
+      lang: await getLang(),
+    })
     console.log(res)
     if (res.status === 201) {
       console.log(res.data.message)
@@ -210,5 +213,4 @@ async function langReq() {
       alert(e.response.data.message) // Вывод текста ошибки
     }
   }
-
 }

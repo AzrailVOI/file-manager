@@ -98,9 +98,11 @@ async function main() {
 
   app.post('/move/*', upload.array('current_file'), (req, res) => {
     if (req.query.fileName) {
-      const isDeletable = !process.env.NOT_DELETABLE_FOLDERS?.toString()
-        .split('$**$')
-        .some((folder) => req.body.fileName.endsWith(folder))
+      const isDeletable =
+        !process.env.NOT_DELETABLE_FOLDERS?.toString()
+          .split('$**$')
+          .some((folder) => req.body.fileName.endsWith(folder)) &&
+        !(req.body.currentDir === '/' && req.body.fileName === 'README.txt')
       if (req.body.fileName && isDeletable) {
         const filePath = path.join(uploads, currentDir, req.body.fileName)
         if (fs.existsSync(filePath)) {
@@ -117,7 +119,7 @@ async function main() {
           res.status(400).json({ message: 'File or folder not found.' })
         }
       } else {
-        res.status(400).json({ message: 'File or folder cannot be deleted' })
+        res.status(400).json({ message: 'File or folder cannot be moved' })
       }
     }
     // res.status(201).json({ message: 'File moved.' })
@@ -153,10 +155,13 @@ async function main() {
       '\n',
       req.body.fileName,
       !('/' + process.env.NOT_DELETABLE_FOLDERS?.toString().split('$**$')).includes(req.body.fileName.replace('/', '')),
+      !(req.body.currentDir === '/' && req.body.fileName === 'README.txt'),
     )
-    const isDeletable = !process.env.NOT_DELETABLE_FOLDERS?.toString()
-      .split('$**$')
-      .some((folder) => req.body.fileName.endsWith(folder))
+    const isDeletable =
+      !process.env.NOT_DELETABLE_FOLDERS?.toString()
+        .split('$**$')
+        .some((folder) => req.body.fileName.endsWith(folder)) &&
+      !(req.body.currentDir === '/' && req.body.fileName === 'README.txt')
     if (req.body.fileName && isDeletable) {
       const filePath = path.join(uploads, currentDir, req.body.fileName)
       if (fs.existsSync(filePath)) {
