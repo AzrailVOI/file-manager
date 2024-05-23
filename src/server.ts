@@ -99,14 +99,16 @@ async function main() {
   })
 
   app.post('/move/*', upload.array('current_file'), (req, res) => {
+    console.log(req.query)
     if (req.query.fileName) {
       const isDeletable =
-        !process.env.NOT_DELETABLE_FOLDERS?.toString()
-          .split(separator)
-          .some((folder) => req.body.fileName.endsWith(folder)) &&
-        !(req.body.currentDir === '/' && req.body.fileName === 'README.txt')
-      if (req.body.fileName && isDeletable) {
-        const filePath = path.join(uploads, currentDir, req.body.fileName)
+        !(
+          process.env.NOT_DELETABLE_FOLDERS?.toString()
+            .split(separator)
+            .includes(String(req.query.fileName).replace('/', '')) && req.query.currentDir === '/'
+        ) && !(req.query.currentDir === '/' && req.query.fileName === 'README.txt')
+      if (req.query.fileName && isDeletable) {
+        const filePath = path.join(uploads, String(currentDir), String(req.query.fileName))
         if (fs.existsSync(filePath)) {
           if (fs.lstatSync(filePath).isDirectory()) {
             // Если это каталог, удаляем его рекурсивно
@@ -142,10 +144,10 @@ async function main() {
   app.put('/rename', (req, res) => {
     console.log(req.body)
     const isEditable =
-      !process.env.NOT_DELETABLE_FOLDERS?.toString()
-        .split(separator)
-        .some((folder) => req.body.oldName.endsWith(folder)) &&
-      !(req.body.currentDir === '/' && req.body.oldName === 'README.txt')
+      !(
+        process.env.NOT_DELETABLE_FOLDERS?.toString().split(separator).includes(req.body.oldName.replace('/', '')) &&
+        req.body.currentDir === '/'
+      ) && !(req.body.currentDir === '/' && req.body.oldName === 'README.txt')
     console.log('isEditable', isEditable)
     if (!isEditable) res.status(400).json({ message: 'Folder cannot be edited' })
     if (req.body.newName && isEditable) {
@@ -166,17 +168,18 @@ async function main() {
     )
     console.log(
       req.body.fileName,
-      !('/' + process.env.NOT_DELETABLE_FOLDERS?.toString().split(separator)).includes(
-        req.body.fileName.replace('/', ''),
+      !(
+        process.env.NOT_DELETABLE_FOLDERS?.toString().split(separator).includes(req.body.fileName.replace('/', '')) &&
+        req.body.currentDir === '/'
       ),
       !(req.body.currentDir === '/' && req.body.fileName === 'README.txt'),
     )
 
     const isDeletable =
-      !process.env.NOT_DELETABLE_FOLDERS?.toString()
-        .split(separator)
-        .some((folder) => req.body.fileName.endsWith(folder)) &&
-      !(req.body.currentDir === '/' && req.body.fileName === 'README.txt')
+      !(
+        process.env.NOT_DELETABLE_FOLDERS?.toString().split(separator).includes(req.body.fileName.replace('/', '')) &&
+        req.body.currentDir === '/'
+      ) && !(req.body.currentDir === '/' && req.body.fileName === 'README.txt')
     if (req.body.fileName && isDeletable) {
       const filePath = path.join(uploads, currentDir, req.body.fileName)
       if (fs.existsSync(filePath)) {
