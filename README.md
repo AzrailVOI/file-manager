@@ -24,7 +24,6 @@ You can add new translations in the file along the path `src/TextDictionary.ts`
 - The PUG file is located in the folder `views`
 - Styles, scripts and everything public in the folder `static`
 
-
 ### .env options
 **NODE_ENV** - **dev** or **prod** (for development or production mode)
 
@@ -38,6 +37,37 @@ You can add new translations in the file along the path `src/TextDictionary.ts`
 
 **MODE** - **ssl**, **httpOnly** or **full** (for HTTPS only, HTTP only or both protocols mode, respectively)
 
+# Quick start with Docker
+
+```shell
+docker run -e NODE_ENV=prod \
+           -e SYSTEM=lin \
+           -e PORT=3000 \
+           -e SSL_PORT=3443 \
+           -e NOT_DELETABLE_FOLDERS="folder1$**$folder2" \
+           -e MODE=full \
+           -p 3000:3000 \
+           -p 3443:3443 \
+           azrailvo/file-manager
+```
+
+**You can change environment variables**
+
+### Example .env file
+````
+NODE_ENV=prod
+SYSTEM=lin
+PORT=5000
+SSL_PORT=5020
+NOT_DELETABLE_FOLDERS=Important_folder$**$Do_not_delete
+MODE=full
+````
+
+# Quick start with NodeJS
+
+Create an .env file
+
+
 ### Example .env file
 ````
 NODE_ENV=dev
@@ -47,7 +77,6 @@ SSL_PORT=5020
 NOT_DELETABLE_FOLDERS=Important_folder$**$Do_not_delete
 MODE=full
 ````
-# Quick start
 
 Download the git repository
 ```sh
