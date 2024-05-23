@@ -40,7 +40,7 @@ You can add new translations in the file along the path `src/TextDictionary.ts`
 # Quick start with Docker
 
 ```shell
-docker run -d -e NODE_ENV=prod -e SYSTEM=lin -e PORT=3000 -e -e NOT_DELETABLE_FOLDERS="folder1$**$folder2" -e MODE=httpOnly -p 3000:3000 azrailvo/file-manager
+docker run -d -e NODE_ENV=prod -e SYSTEM=lin -e PORT=3000 -e NOT_DELETABLE_FOLDERS="folder1$**$folder2" -e MODE=httpOnly -p 3000:3000 azrailvo/file-manager
 ```
 
 **You can change environment variables**
