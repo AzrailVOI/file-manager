@@ -14,6 +14,8 @@ dotenv.config()
 const app: Express = express()
 const httpServer = http.createServer(app)
 
+const separator = '-**-'
+
 async function main() {
   if (process.env.NODE_ENV !== 'dev') {
     app.use(morgan('dev'))
@@ -100,7 +102,7 @@ async function main() {
     if (req.query.fileName) {
       const isDeletable =
         !process.env.NOT_DELETABLE_FOLDERS?.toString()
-          .split('$**$')
+          .split(separator)
           .some((folder) => req.body.fileName.endsWith(folder)) &&
         !(req.body.currentDir === '/' && req.body.fileName === 'README.txt')
       if (req.body.fileName && isDeletable) {
@@ -151,15 +153,16 @@ async function main() {
     console.log(req.body)
     console.log(
       'NDF',
-      '/' + process.env.NOT_DELETABLE_FOLDERS?.toString().split('$**$'),
-      '\n',
+      process.env.NOT_DELETABLE_FOLDERS, separator,
+      process.env.NOT_DELETABLE_FOLDERS?.toString().split(separator) )
+    console.log(
       req.body.fileName,
-      !('/' + process.env.NOT_DELETABLE_FOLDERS?.toString().split('$**$')).includes(req.body.fileName.replace('/', '')),
-      !(req.body.currentDir === '/' && req.body.fileName === 'README.txt'),
-    )
+      !('/' + process.env.NOT_DELETABLE_FOLDERS?.toString().split(separator)).includes(req.body.fileName.replace('/', '')),
+      !(req.body.currentDir === '/' && req.body.fileName === 'README.txt'))
+
     const isDeletable =
       !process.env.NOT_DELETABLE_FOLDERS?.toString()
-        .split('$**$')
+        .split(separator)
         .some((folder) => req.body.fileName.endsWith(folder)) &&
       !(req.body.currentDir === '/' && req.body.fileName === 'README.txt')
     if (req.body.fileName && isDeletable) {

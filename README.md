@@ -33,14 +33,14 @@ You can add new translations in the file along the path `src/TextDictionary.ts`
 
 **SSL_PORT** - port number for the HTTPS server (Only in NodeJS start)
 
-**NOT_DELETABLE_FOLDERS** - list of names of files and folders not available for deletion (separator: **$\*\*$**)
+**NOT_DELETABLE_FOLDERS** - list of names of files and folders not available for deletion (separator: **-\*\*-**)
 
 **MODE** - **ssl** (Only in NodeJS start), **httpOnly** or **full** (Only in NodeJS start) (for HTTPS only, HTTP only or both protocols mode, respectively)
 
 # Quick start with Docker
 
 ```shell
-docker run -d -e NODE_ENV=prod -e SYSTEM=lin -e PORT=3000 -e NOT_DELETABLE_FOLDERS="folder1$**$folder2" -e MODE=httpOnly -p 3000:3000 azrailvo/file-manager
+docker run -d -e NODE_ENV=prod -e SYSTEM=lin -e PORT=3000 -e NOT_DELETABLE_FOLDERS="folder1-**-folder2" -e MODE=httpOnly -p 3000:3000 azrailvo/file-manager
 ```
 
 **You can change environment variables**
@@ -55,7 +55,7 @@ NODE_ENV=dev
 SYSTEM=win
 PORT=5000
 SSL_PORT=5020
-NOT_DELETABLE_FOLDERS=Important_folder$**$Do_not_delete
+NOT_DELETABLE_FOLDERS=Important_folder-**-Do_not_delete
 MODE=full
 ````
 
