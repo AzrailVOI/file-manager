@@ -16,8 +16,8 @@ SSL support implemented
 ### Implemented in 4 languages: 
 - English
 - Ukrainian
-- Russian
-- Slovak. 
+- Slovak
+- Russian.
 
 You can add new translations in the file along the path `src/TextDictionary.ts`
 
@@ -39,10 +39,12 @@ You can add new translations in the file along the path `src/TextDictionary.ts`
 
 **MODE** - **ssl** (Only in NodeJS start), **httpOnly** or **full** (Only in NodeJS start) (for HTTPS only, HTTP only or both protocols mode, respectively)
 
+**ADDITIONAL_SITE_NAME** - name of the site (for example, mycompanysite.org) (you can set '' for no additional site name)
+
 # Quick start with Docker
 
 ```shell
-docker run -d -e NODE_ENV=prod -e SYSTEM=lin -e PORT=3000 -e NOT_DELETABLE_FOLDERS="folder1-**-folder2" -e MODE=httpOnly -p 3000:3000 azrailvo/file-manager
+docker run -d -e NODE_ENV=prod -e SYSTEM=lin -e PORT=3000 -e NOT_DELETABLE_FOLDERS="folder1-**-folder2" -e MODE=httpOnly -e ADDITIONAL_SITE_NAME=mycompanysite.org -p 3000:3000 azrailvo/file-manager
 ```
 
 **You can change environment variables**
@@ -59,6 +61,7 @@ PORT=5000
 SSL_PORT=5020
 NOT_DELETABLE_FOLDERS=Important_folder-**-Do_not_delete
 MODE=full
+ADDITIONAL_SITE_NAME=mycompanysite.org
 ````
 
 Download the git repository
