@@ -77,6 +77,7 @@ document.querySelectorAll('.contextmenuoption').forEach((option) => {
     option.parentElement.classList.add('opacity-0')
     option.parentElement.style.top = 0 + 'px'
     option.parentElement.style.left = 0 + 'px'
+    const selectedLang = await getLang()
 
     switch (option.dataset.opt) {
       case 'open':
@@ -130,7 +131,7 @@ document.querySelectorAll('.contextmenuoption').forEach((option) => {
           }
         } catch (e) {
           if (e.response.status === 400) {
-            alert(e.response.data.message) // Вывод текста ошибки
+            vanillaToast.error(e.response.data.message) // Вывод текста ошибки
           }
         }
         break
@@ -138,10 +139,11 @@ document.querySelectorAll('.contextmenuoption').forEach((option) => {
         //copy link
         const relativeLink = clicked_btn.getAttribute('href')
         if (relativeLink) {
-          const fullLink = `${window.location.origin}/${relativeLink}`
+          const fullLink = new URL(relativeLink, window.location.href).href;
           try {
             await navigator.clipboard.writeText(fullLink)
-            const selectedLang = await getLang()
+
+            console.log('lang', selectedLang)
             switch (selectedLang) {
               case 'en':
                 vanillaToast.success('Link copied')
@@ -149,7 +151,7 @@ document.querySelectorAll('.contextmenuoption').forEach((option) => {
               case 'ru':
                 vanillaToast.success('Ссылка скопирована')
                 break
-              case 'ua':
+              case 'uk':
                 vanillaToast.success('Посилання скопійовано')
                 break
               case 'sk':
@@ -159,10 +161,10 @@ document.querySelectorAll('.contextmenuoption').forEach((option) => {
                 vanillaToast.success('Link copied')
             }
           } catch (err) {
-            alert('Не вдалося скопіювати\n' + err)
+            vanillaToast.error('Не вдалося скопіювати\n' + err)
           }
         } else {
-          alert('Посилання не знайдено')
+          vanillaToast.error('Посилання не знайдено')
         }
         break
     }
@@ -183,8 +185,8 @@ async function renameFile(input, span) {
     }
   } catch (error) {
     if (error.response.status === 400) {
-      alert(error.response.data.message + ' Try another name') // Вывод текста ошибки
-      location.reload()
+      vanillaToast.error(error.response.data.message + ' Try another name') // Вывод текста ошибки
+      setTimeout(() => location.reload(), 2000)
     } else {
       console.error(error) // Вывод других ошибок в консоль
     }
@@ -201,8 +203,8 @@ async function newFolderReq(input, span) {
     }
   } catch (error) {
     if (error.response.status === 400) {
-      alert(error.response.data.message + ' Try another name') // Вывод текста ошибки
-      location.reload()
+      vanillaToast.error(error.response.data.message + ' Try another name') // Вывод текста ошибки
+      setTimeout(() => location.reload(), 2000)
     } else {
       console.error(error) // Вывод других ошибок в консоль
     }
@@ -241,7 +243,7 @@ async function langReq() {
     }
   } catch (e) {
     if (e.response.status !== 201) {
-      alert(e.response.data.message) // Вывод текста ошибки
+      vanillaToast.error(e.response.data.message) // Вывод текста ошибки
     }
   }
 }
