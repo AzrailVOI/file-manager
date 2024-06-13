@@ -4,6 +4,7 @@ head
   link(rel='stylesheet', href='/static/style.css')
   link(rel='stylesheet', href='/static/upload.css')
   link(rel='stylesheet', href='/static/files.css')
+  link(rel='stylesheet', href='/static/vanilla-toast.css')
   link(rel="icon", type="image/svg+xml", href="/static/favicon.svg")
   script(src="https://unpkg.com/lucide@latest")
   script(src="https://unpkg.com/axios/dist/axios.min.js")
@@ -19,6 +20,7 @@ head
 #container.col
   #contextmenu.opacity-0
     div.contextmenuoption(data-opt='open')=TextDictionary[lang].contextmenu.open
+    div.contextmenuoption(data-opt='copy')=TextDictionary[lang].contextmenu.copy
     div.contextmenuoption(data-opt='rename')=TextDictionary[lang].contextmenu.rename
     div.contextmenuoption(data-opt='delete')=TextDictionary[lang].contextmenu.delete
   .add
@@ -63,3 +65,4 @@ head
 script(type='text/javascript', src='/static/script.js').
 script(type='text/javascript', src='/static/movingInside.js').
 script(type='text/javascript', src='/static/upload.js').
+script(type='text/javascript', src='/static/vanilla-toast.js').

@@ -16,6 +16,7 @@ const TextDictionary:ITextDictionary = {
             open: 'Open',
             rename: 'Rename',
             delete: 'Delete',
+            copy: 'Copy link'
         }
     },
     uk: {
@@ -35,6 +36,7 @@ const TextDictionary:ITextDictionary = {
             open: 'Відкрити',
             rename: 'Перейменувати',
             delete: 'Видалити',
+            copy: 'Копіювати посилання'
         }
     },
     ru: {
@@ -54,6 +56,7 @@ const TextDictionary:ITextDictionary = {
             open: 'Открыть',
             rename: 'Переименовать',
             delete: 'Удалить',
+            copy: 'Скопировать ссылку'
         }
     },
     sk: {
@@ -73,6 +76,7 @@ const TextDictionary:ITextDictionary = {
             open: 'Otvoriť',
             rename: 'Premenovať',
             delete: 'Vymazať',
+            copy: 'Kopírujúť odkaz'
         }
     }
 }
@@ -97,6 +101,7 @@ interface IContextMenu{
     open: string
     rename: string
     delete: string
+    copy: string
 }
 interface ITDItem {
     lang: string

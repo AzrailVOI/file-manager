@@ -2,7 +2,9 @@
 ExpressJS + Typescript + PUG
 
 ## Description
-A simple file manager created using ExpressJS, Typescript and PUG.
+A simple file manager created using [ExpressJS](https://expressjs.com), [Typescript](https://www.typescriptlang.org/) and [PUG](https://pugjs.org/).
+
+Also, I used [vanilla-toast](https://github.com/talsu/vanilla-toast) library for displaying notifications.
 
 SSL support implemented
 

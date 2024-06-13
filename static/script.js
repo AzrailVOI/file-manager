@@ -73,7 +73,7 @@ document.querySelectorAll('.fileLink').forEach((link) => {
 })
 
 document.querySelectorAll('.contextmenuoption').forEach((option) => {
-  option.addEventListener('click', async function () {
+  option.addEventListener('click', async function (message) {
     option.parentElement.classList.add('opacity-0')
     option.parentElement.style.top = 0 + 'px'
     option.parentElement.style.left = 0 + 'px'
@@ -133,7 +133,37 @@ document.querySelectorAll('.contextmenuoption').forEach((option) => {
             alert(e.response.data.message) // Вывод текста ошибки
           }
         }
-
+        break
+      case 'copy':
+        //copy link
+        const relativeLink = clicked_btn.getAttribute('href')
+        if (relativeLink) {
+          const fullLink = `${window.location.origin}/${relativeLink}`
+          try {
+            await navigator.clipboard.writeText(fullLink)
+            const selectedLang = await getLang()
+            switch (selectedLang) {
+              case 'en':
+                vanillaToast.success('Link copied')
+                break
+              case 'ru':
+                vanillaToast.success('Ссылка скопирована')
+                break
+              case 'ua':
+                vanillaToast.success('Посилання скопійовано')
+                break
+              case 'sk':
+                vanillaToast.success('Odkaz skópirován')
+                break
+              default:
+                vanillaToast.success('Link copied')
+            }
+          } catch (err) {
+            alert('Не вдалося скопіювати\n' + err)
+          }
+        } else {
+          alert('Посилання не знайдено')
+        }
         break
     }
   })
