@@ -24,6 +24,9 @@ async function main() {
   const PORT = process.env.PORT || 5000
   const SSL_PORT = process.env.SSL_PORT || 5020
 
+
+  const additionalSiteName = process.env.ADDITIONAL_SITE_NAME || ''
+
   app.use(express.urlencoded({ extended: true }))
   app.use(express.json())
 
@@ -66,6 +69,7 @@ async function main() {
         TextDictionary: TextDictionary,
         lang: lang,
         langCodes: Object.keys(TextDictionary),
+        additionalSiteName
       })
     }),
   )
@@ -85,6 +89,7 @@ async function main() {
         TextDictionary: TextDictionary,
         lang: lang,
         langCodes: Object.keys(TextDictionary),
+        additionalSiteName
       })
     }),
   )
