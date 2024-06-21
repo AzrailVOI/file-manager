@@ -139,7 +139,7 @@ document.querySelectorAll('.contextmenuoption').forEach((option) => {
         //copy link
         const relativeLink = clicked_btn.getAttribute('href')
         if (relativeLink) {
-          const fullLink = decodeURI(new URL(relativeLink, window.location.href).href);
+          const fullLink = decodeURI(new URL(relativeLink, window.location.href).href).replace(/[?'()* ]/g, c => '%' + c.charCodeAt(0).toString(16).toUpperCase());
           try {
             await navigator.clipboard.writeText(fullLink)
 
