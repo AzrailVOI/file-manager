@@ -22,7 +22,24 @@ body{
     font-weight: bold;
     margin-bottom: 2rem;
 }
-
+.footer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    font-size: 10pt;
+    text-align: center;
+    color: #FFFFFF;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: .5rem;
+    opacity: .7;
+    >a{
+        display: inline-block;
+    }
+}
 h1 {
     margin: 0;
     padding: 0;

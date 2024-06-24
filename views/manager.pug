@@ -61,6 +61,17 @@ head
             span.fileLink
               a(data-type='file', href=(isRoot ? 'uploads/' : '') + file.replace(/\//g, ''), target="_blank")= file.replace(/\//g, '')
                 i(data-lucide="file")
+.footer
+    i Developed by Azraїl
+    div
+      a(href="https://azrail.xyz", target="_blank")
+        i(data-lucide="globe")
+    div
+      a(href="https://github.com/AzrailVOI", target="_blank")
+        i(data-lucide="github")
+    div
+      a(href="https://gitlab.com/AzrailVOI", target="_blank")
+        i(data-lucide="gitlab")
 
 script(type='text/javascript', src='/static/script.js').
 script(type='text/javascript', src='/static/movingInside.js').
